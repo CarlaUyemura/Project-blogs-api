@@ -4,7 +4,6 @@ const CategoryModel = (sequelize, DataTypes) => {
   }, {
     tableName: 'categories',
   });
-
   return Category;
 };
 
