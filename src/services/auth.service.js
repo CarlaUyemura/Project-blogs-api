@@ -23,7 +23,7 @@ const validateLogin = async ({ email, password }) => {
   } 
   const { password: _, ...useWithoutPassword } = user.dataValues;
   const token = jwt.createToken(useWithoutPassword);
-  return { status: 200, message: token }; 
+  return token; 
 };
 
 module.exports = {
