@@ -1,4 +1,5 @@
 const UserService = require('../services/user.service');
+const authService = require('../services/auth.service');
 
 const getAll = async (_req, res) => {
   try {
@@ -10,6 +11,14 @@ const getAll = async (_req, res) => {
   }
 };
 
+const createUser = async (req, res) => {
+  const { body } = req;
+  const { email, password } = await UserService.createUser(body);
+  const token = await authService.validateLogin({ email, password });
+  res.status(201).json({ token });
+};
+
 module.exports = {
   getAll,
+  createUser,
 };
