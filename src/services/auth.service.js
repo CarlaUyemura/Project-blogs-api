@@ -10,16 +10,19 @@ const validateBody = (params) => {
   });
   const { error, value } = schemaBody.validate(params);
   if (error) {
-    return { status: 400, message: 'Some required fields are missing' };
+    error.status = 400;
+    error.message = 'Some required fields are missing';
+    throw error;
   }
-  return { status: 200, message: value };
+  return value;
 };
 
 const validateLogin = async ({ email, password }) => {
   const user = await User.findOne({ where: { email } });
   if (!user || user.password !== password) {
-    const error = 'Invalid fields';
-    return { status: 400, message: error };
+    const error = new Error('Invalid fields');
+    error.status = 400;
+    throw error;
   } 
   const { password: _, ...useWithoutPassword } = user.dataValues;
   const token = jwt.createToken(useWithoutPassword);
