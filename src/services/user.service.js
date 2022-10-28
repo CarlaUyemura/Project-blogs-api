@@ -14,6 +14,7 @@ const validateData = (data) => {
     image: Joi.string(),
   });
   const { error, value } = schemaBody.validate(data);
+ 
   if (error) {
     error.status = 400;
     throw error;
@@ -22,12 +23,11 @@ const validateData = (data) => {
 };
 
 const createUser = async (data) => {
-  const { email } = await validateData(data);
-
+  const { email } = validateData(data);
   const user = await User.findOne({ where: { email } });
-  if (user.email) {
+  if (user) {
     const error = new Error('User already registered');
-    error.status = 400;
+    error.status = 409;
     throw error;
   } 
   const newUser = await User.create(data);
