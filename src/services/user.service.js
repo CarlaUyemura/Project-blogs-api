@@ -10,6 +10,19 @@ const getAll = async () => {
   return users;
 };
 
+const getById = async (id) => {
+  const user = await User.findByPk(id, { 
+    attributes: {
+      exclude: ['password'],
+  } });
+  if (!user) {
+    const error = new Error('User does not exist');
+    error.status = 404;
+    throw error;
+  }
+  return user;
+};
+
 const validateData = (data) => {
   const schemaBody = Joi.object({
     displayName: Joi.string().min(8).required(),
@@ -40,5 +53,6 @@ const createUser = async (data) => {
 
 module.exports = {
   getAll,
+  getById,
   createUser,
 };
