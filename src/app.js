@@ -9,8 +9,9 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/user', userRouter);
 app.use('/login', loginRouter);
+// app.use(authMiddleware.validationToken);
+app.use('/user', userRouter);
 app.use(errorMiddleware.error);
 
 // ...
